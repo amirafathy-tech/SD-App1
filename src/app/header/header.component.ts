@@ -12,13 +12,13 @@ import { TranslatationService } from '../shared/translatation.service';
 })
 export class HeaderComponent implements OnInit,OnDestroy  {
 
-  isDarkMode: boolean;
+  isDarkMode: boolean= false;
 
   isAuthenticated = false;
   private userSub!: Subscription;
 
   constructor(private translationService:TranslatationService,private authService: AuthService,private themeService: ThemeService,private translate: TranslateService) {
-    this.isDarkMode = this.themeService.getTheme() === 'dark';
+    //this.isDarkMode = this.themeService.getTheme() === 'dark';
   }
 
   switchLanguage(lang: string) {
@@ -26,7 +26,7 @@ export class HeaderComponent implements OnInit,OnDestroy  {
   }
   toggleTheme(): void {
     this.themeService.toggleTheme();
-    this.isDarkMode = this.themeService.getTheme() === 'dark';
+   // this.isDarkMode = this.themeService.getTheme() === 'dark';
   }
 
 

@@ -16,7 +16,11 @@ export class AppComponent implements OnInit {
   }
  
 
+  // ngOnInit(): void {
+  //   //this.themeService.loadTheme();
+  // }
   ngOnInit(): void {
-    this.themeService.loadTheme();
+    const currentTheme = this.themeService.getCurrentTheme();
+    this.themeService.setTheme(currentTheme);
   }
 }

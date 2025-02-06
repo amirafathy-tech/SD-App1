@@ -51,10 +51,10 @@
           </ng-template>
 
           <li class="nav-item">
-            <button (click)="toggleTheme()" class="theme-toggle-btn">
+            <!-- <button (click)="toggleTheme()" class="theme-toggle-btn">
               <i [ngClass]="isDarkMode ? 'pi pi-sun' : 'pi pi-moon'"></i>
-            </button>
-            
+            </button> -->
+            <button (click)="toggleTheme()">Toggle Theme</button>
 
           </li>
           <li class="nav-item">
@@ -62,6 +62,7 @@
             </button>
             <button (click)="(switchLanguage('en'))" class="btn btn-danger">English
             </button>
+         
             
 
           </li>
