@@ -1,10 +1,10 @@
 <p-toast></p-toast>
-<p-table [value]="records" dataKey="formulaCode" styleClass="p-datatable-gridlines" editMode="row"
-    [tableStyle]="{'min-width': '50rem'}">
+<p-table [value]="records" dataKey="formulaCode" styleClass="p-datatable-gridlines" editMode="row" [responsive]="true"
+    [tableStyle]="{'min-width': '50rem'}"  [paginator]="true" [rows]="10" [rowsPerPageOptions]="[10, 20, 30]" [scrollable]="true" scrollHeight="flex" >
     <ng-template pTemplate="caption">
         <div class="flex align-items-center justify-content-between">
             Formulas:
-            <button pButton (click)="navigateAddFormula()" icon="pi pi-plus" class="rounded-input" size="small" label="Add Formula"></button>
+            <p-button  [outlined]="true"   (click)="navigateAddFormula()" icon="pi pi-plus" size="small" label="Add Formula"></p-button>
         </div>
     </ng-template>
     <ng-template pTemplate="header">
@@ -74,7 +74,7 @@
             </div>
         </div>
         <ng-template pTemplate="footer">
-            <p-button icon="pi pi-check" (click)="visible = false" label="Ok" class="rounded-input" pAutoFocus [autofocus]="true"></p-button>
+            <p-button icon="pi pi-check" (click)="visible = false" label="Ok"  pAutoFocus [autofocus]="true"></p-button>
         </ng-template>
     </p-dialog>
 </div>

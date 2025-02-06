@@ -9,6 +9,44 @@
 
 @import "primeflex/primeflex.css";
 
+:root{
+--main-color:#007BFF;
+--background-color: #ffffff;
+--text-color: #000000;
+--button-bg: #007bff;
+--button-text: #ffffff;
+}
+
+
+
+.dark-theme {
+  --background-color: #1e1e1e;
+  --text-color: #ffffff;
+  --button-bg: #444;
+  --button-text: #ffffff;
+}
+
+body {
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
+
+.theme-toggle-btn {
+  background: transparent;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.theme-toggle-btn i {
+  color: var(--text-color);
+}
+
+
+
+
+
 
 
 .container {

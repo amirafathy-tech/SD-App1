@@ -1,35 +1,37 @@
 <!-- Service Master Data -->
 <div class="card mt-5">
     <p-toast></p-toast>
-    <p-toolbar styleClass="mb-4 gap-2">
+    <p-toolbar styleClass="custom-toolbar mb-4 gap-2">
         <ng-template pTemplate="left">
-            <div class="field">
+            <div class="field search-container">
                 <input pInputText type="text" placeholder="Search...."
-                    class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary "
+                    class="search-input text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary "
                     [(ngModel)]="searchValue" (input)="onSearchInputChange()" />
             </div>
         </ng-template>
         <ng-template pTemplate="right">
-            <button pButton label="Create" size="small" icon="pi pi-plus" (click)="navigateAddServices()"
-                class="m-2"></button>
-                <button pButton label="Details" size="small" (click)="navigateDetailServices()"
-                class="m-2"></button>
-            <!-- <button pButton label="Edit" class="p-button-rounded m-2 " (click)="navigateAddServices()" [disabled]="!isEditButtonDisabled" class="m-2 edit-button"></button>  -->
-            <button pButton label="Edit" size="small" (click)="navigateEditService()" class="m-2 edit-button"></button>
-            <button pButton pRipple icon="pi pi-copy" 
-            
-                (click)="navigateCopyService()"></button>
-            <button pButton label="Export" size="small" (click)="exportExcel()" icon="pi pi-upload"
-                class="m-2"></button>
+            <div class="button-group">
+                <p-button   [outlined]="true"  label="Create" size="small" icon="pi pi-plus" (click)="navigateAddServices()" class="m-2"></p-button>
+
+                <p-button   [outlined]="true"   label="Details" size="small" icon="pi pi-info-circle" (click)="navigateDetailServices()" class="m-2"></p-button>
+
+                <p-button   [outlined]="true"  label="Edit" size="small" icon="pi pi-pencil" (click)="navigateEditService()" class="m-2 edit-button"></p-button>
+
+                <p-button   [outlined]="true"  label="Copy"  size="small" icon="pi pi-copy"  (click)="navigateCopyService()" class="m-2"></p-button>
+
+                <p-button   [outlined]="true"  label="Export" size="small" (click)="exportExcel()" icon="pi pi-upload" class="m-2"></p-button>
+
+            </div>
 
         </ng-template>
     </p-toolbar>
 
     <div class="table-container">
-        <p-table #dt [columns]="selectedColumns" [value]="filteredRecords" [scrollable]="true" scrollHeight="400px"
+        <p-table #dt [columns]="selectedColumns" [value]="filteredRecords" [scrollable]="true" scrollHeight="flex"
             [reorderableColumns]="true" [rows]="10" [filterDelay]="0"
             [globalFilterFields]="['code', 'description','lastChangeDate','serviceTypeCode']"
-            [tableStyle]="{ 'min-width': '50rem' }" [rowHover]="true" dataKey="serviceNumberCode" [showCurrentPageReport]="true">
+            [tableStyle]="{ 'min-width': '50rem' }" [rowHover]="true" dataKey="serviceNumberCode"
+            [showCurrentPageReport]="true" [paginator]="true" [rows]="10" [rowsPerPageOptions]="[10, 20, 30]">
 
             <ng-template pTemplate="caption">
                 <p-multiSelect [options]="cols" [(ngModel)]="selectedColumns" optionLabel="header"
@@ -55,11 +57,11 @@
                     </td>
                     <td *ngFor="let col of columns">
                         <ng-container *ngIf="col.field === 'serviceNumberCode'">
-                            {{ 'S' + record[col.field]  }}
-                          </ng-container>
-                          <ng-container *ngIf="col.field !== 'serviceNumberCode'">
+                            {{ 'S' + record[col.field] }}
+                        </ng-container>
+                        <ng-container *ngIf="col.field !== 'serviceNumberCode'">
                             {{ record[col.field] }}
-                          </ng-container>
+                        </ng-container>
                     </td>
                 </tr>
             </ng-template>

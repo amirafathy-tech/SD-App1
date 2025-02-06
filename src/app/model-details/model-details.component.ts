@@ -957,6 +957,8 @@ export class ModelDetailsComponent {
   parameterValuesUpdate: { [key: string]: number } = {};
   openPopup() {
     if (this.selectedFormulaRecord) {
+      console.log(this.selectedFormulaRecord);
+      
       this.showPopup = true;
       for (const parameterId of this.selectedFormulaRecord.parameterIds) {
         this.parameterValues[parameterId] = 0;

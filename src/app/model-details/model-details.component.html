@@ -1,37 +1,44 @@
-<p-card class="m-2">
-    <div class="row">
-        <div class="form-group col-4">
-            <label for="shortText" class="fw-bold mr-2">Sh.Text:</label>
-            <ng-container *ngIf="modelSpecRecord">
-                <div class="inline-element border border-1 border-black rounded-input">
-                    {{ modelSpecRecord.description }}
-                </div>
-            </ng-container>
+
+    <p-card class="m-2"> 
+    <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
+      <!-- Short Text -->
+      <div class="d-flex align-items-center">
+        <label for="shortText" class="fw-bold me-2">Short.Text:</label>
+        <ng-container *ngIf="modelSpecRecord">
+          <div class="border rounded px-3 py-1 shadow-sm bg-light flex-grow-1">
+            {{ modelSpecRecord.description }}
+          </div>
+        </ng-container>
+      </div>
+  
+      <!-- Total Value -->
+      <div class="d-flex align-items-center">
+        <label for="totalValue" class="fw-bold me-2">TotalValue:</label>
+        <div class="border rounded px-3 py-1 shadow-sm bg-light">
+          {{ totalValue }}
         </div>
-        <div class="form-group col-5">
-            <label for="totalValue" class="fw-bold mr-2">TotalValue:</label>
-            <div class="inline-element border border-1 border-black rounded-input ">
-                {{totalValue}}
-            </div>
-            <ng-container *ngIf="modelSpecRecord">
-                <div class="inline-element border border-1 border-black rounded-input">
-                    {{ modelSpecRecord.currencyCode}}
-                </div>
-            </ng-container>
-        </div>
-        <div class="form-group col-3">
-           
-      <button pButton label="Export" size="small" (click)="exportExcel()" icon="pi pi-download" class="mx-2"></button>
-      <p-button (click)="showImportsDialog()" icon="pi pi-external-link" label="Import"></p-button>
-        </div>
+        <ng-container *ngIf="modelSpecRecord">
+          <div class="border rounded px-3 py-1 shadow-sm bg-light ms-2">
+            {{ modelSpecRecord.currencyCode }}
+          </div>
+        </ng-container>
+      </div>
+  
+      <!-- Buttons -->
+      <div class="d-flex gap-2">
+        <p-button [outlined]="true" label="Export" size="small" (click)="exportExcel()" icon="pi pi-download"></p-button>
+        <p-button [outlined]="true" (click)="showImportsDialog()" size="small" icon="pi pi-external-link" label="Import"></p-button>
+      </div>
     </div>
 </p-card>
+  
+  
 
 <p-toolbar styleClass="mb-4 gap-2">
     <ng-template pTemplate="right">
-        <button pButton label="Detail" (click)="showDialog()" size="small" class="m-2 edit-button"></button>
-        <button pButton pRipple icon="pi pi-trash" (click)="deleteRecord()" class="p-button-rounded m-2 "></button>
-        <button pButton label="Condition" size="small" class="m-2"></button>
+        <p-button [outlined]="true" label="Detail" pRipple icon="pi pi-info-circle" (click)="showDialog()" class="p-button-rounded m-2 " />
+        <p-button [outlined]="true" pRipple icon="pi pi-trash" (click)="deleteRecord()" class="p-button-rounded m-2 " />
+        <p-button [outlined]="true" label="Condition" size="small" class="m-2" />
     </ng-template>
     <ng-template pTemplate="left">
         <!-- <div class="field">
@@ -51,7 +58,7 @@
 
 <p-table [value]="records" [scrollable]="true" styleClass="p-datatable-gridlines" responsiveLayout="stack"
     [breakpoint]="'960px'" dataKey="modelSpecDetailsCode" editMode="row" [tableStyle]="{'min-width': '50rem'}"
-    [responsive]="true">
+    [responsive]="true" [paginator]="true" [rows]="10" [rowsPerPageOptions]="[10, 20, 30]">
     <ng-template pTemplate="header">
         <tr>
             <th>
@@ -111,10 +118,11 @@
                     <ng-template pTemplate="input">
                         <p-dropdown [options]="recordsServiceNumber" [(ngModel)]="record.serviceNumberCode"
                             [ngModelOptions]="{standalone: true}" optionValue="serviceNumberCode"
-                            optionLabel="description" [filter]="true" [filterFields]="['serviceNumberCode','description']"
-                            [showClear]="true" placeholder="Select SeviceNumber" [appendTo]="'body'"
-                            (onChange)="onServiceNumberUpdateChange($event)"
-                             [virtualScroll]="true" [virtualScrollItemSize]="40">
+                            optionLabel="description" [filter]="true"
+                            [filterFields]="['serviceNumberCode','description']" [showClear]="true"
+                            placeholder="Select SeviceNumber" [appendTo]="'body'"
+                            (onChange)="onServiceNumberUpdateChange($event)" [virtualScroll]="true"
+                            [virtualScrollItemSize]="40">
                             <ng-template let-record pTemplate="item">
                                 <div class="flex align-items-center gap-2">
                                     <div>{{ record.serviceNumberCode }}::{{ record.description }}</div>
@@ -134,7 +142,8 @@
                             <input pInputText class="rounded-input" type="text" [(ngModel)]="record.shortText">
                         </ng-container>
                         <ng-container *ngIf="updateShortTextChangeAllowed && updateSelectedServiceNumberRecord">
-                            <input pInputText class="rounded-input" type="text" [ngModel]="updateSelectedServiceNumberRecord.description"
+                            <input pInputText class="rounded-input" type="text"
+                                [ngModel]="updateSelectedServiceNumberRecord.description"
                                 (ngModelChange)="updateShortText = $event">
                         </ng-container>
                         <ng-container *ngIf="!updateShortTextChangeAllowed && updateSelectedServiceNumberRecord">
@@ -150,7 +159,8 @@
                 <p-cellEditor>
                     <ng-template pTemplate="input">
                         <ng-container *ngIf="!updatedFormulaRecord">
-                            <input pInputNumber class="rounded-input" [min]="0" type="number" [(ngModel)]="record.quantity">
+                            <input pInputNumber class="rounded-input" [min]="0" type="number"
+                                [(ngModel)]="record.quantity">
                         </ng-container>
                         <ng-container *ngIf="updatedFormulaRecord && resultAfterTestUpdate">
                             {{ resultAfterTestUpdate}}
@@ -168,8 +178,8 @@
                             [ngModelOptions]="{standalone: true}" optionValue="formula" optionLabel="formula"
                             [filter]="true" [filterFields]="['formula','description']" [showClear]="true"
                             [appendTo]="'body'" placeholder=`{{record.formulaCode}}`
-                             (onChange)="onFormulaUpdateSelect($event)"
-                             [virtualScroll]="true" [virtualScrollItemSize]="40">
+                            (onChange)="onFormulaUpdateSelect($event)" [virtualScroll]="true"
+                            [virtualScrollItemSize]="40">
                             <ng-template let-record pTemplate="item">
                                 <div class="flex align-items-center gap-2">
                                     <div>{{ record.formula }}::{{ record.description }}</div>
@@ -202,7 +212,8 @@
             <td>
                 <p-cellEditor>
                     <ng-template pTemplate="input">
-                        <input pInputNumber class="rounded-input" [min]="0" type="number" [(ngModel)]="record.grossPrice">
+                        <input pInputNumber class="rounded-input" [min]="0" type="number"
+                            [(ngModel)]="record.grossPrice">
                     </ng-template>
                     <ng-template pTemplate="output">
                         {{record.grossPrice }}
@@ -233,10 +244,10 @@
                         </ng-container>
                         <ng-container *ngIf="!updateSelectedServiceNumberRecord">
                             <p-dropdown [options]="recordsUnitOfMeasure" [(ngModel)]="record.unitOfMeasurementCode"
-                                [ngModelOptions]="{standalone: true}" optionValue="code"
-                                optionLabel="code" [filter]="true" [filterFields]="['code','description']"
-                                [showClear]="true" placeholder=`{{record.unitOfMeasurementCode}}` [required]="true"
-                                [appendTo]="'body'" [virtualScroll]="true" [virtualScrollItemSize]="40">
+                                [ngModelOptions]="{standalone: true}" optionValue="code" optionLabel="code"
+                                [filter]="true" [filterFields]="['code','description']" [showClear]="true"
+                                placeholder=`{{record.unitOfMeasurementCode}}` [required]="true" [appendTo]="'body'"
+                                [virtualScroll]="true" [virtualScrollItemSize]="40">
                                 <ng-template let-record pTemplate="item">
                                     <div class="flex align-items-center gap-2">
                                         <!-- <div>{{ record.UnitOfMeasureLongName }}::{{ record.UnitOfMeasureName }}</div> -->
@@ -244,7 +255,7 @@
                                     </div>
                                 </ng-template>
                             </p-dropdown>
-                            </ng-container>
+                        </ng-container>
                     </ng-template>
                     <ng-template pTemplate="output">
                         {{record.unitOfMeasurementCode }}
@@ -260,7 +271,8 @@
             <td>
                 <p-cellEditor>
                     <ng-template pTemplate="input">
-                        <input pInputNumber class="rounded-input" [min]="0" type="number" [(ngModel)]="record.overFulfilmentPercentage">
+                        <input pInputNumber class="rounded-input" [min]="0" type="number"
+                            [(ngModel)]="record.overFulfilmentPercentage">
                     </ng-template>
                     <ng-template pTemplate="output">
                         {{record.overFulfilmentPercentage }}
@@ -291,7 +303,8 @@
             <td>
                 <p-cellEditor>
                     <ng-template pTemplate="input">
-                        <input pInputNumber class="rounded-input" [min]="0" type="number" [(ngModel)]="record.pricePerUnitOfMeasurement">
+                        <input pInputNumber class="rounded-input" [min]="0" type="number"
+                            [(ngModel)]="record.pricePerUnitOfMeasurement">
                     </ng-template>
                     <ng-template pTemplate="output">
                         {{record.pricePerUnitOfMeasurement }}
@@ -308,7 +321,8 @@
                             <p-dropdown [options]="recordsMatGrp" [(ngModel)]="record.materialGroupCode"
                                 [ngModelOptions]="{standalone: true}" optionValue="code" optionLabel="code"
                                 [filter]="true" [filterFields]="['code','description']" [showClear]="true"
-                                [virtualScroll]="true" [virtualScrollItemSize]="40" placeholder=`{{record.materialGroupCode}}` [appendTo]="'body'">
+                                [virtualScroll]="true" [virtualScrollItemSize]="40"
+                                placeholder=`{{record.materialGroupCode}}` [appendTo]="'body'">
                                 <ng-template let-record pTemplate="item">
                                     <div class="flex align-items-center gap-2">
                                         <div>{{ record.code }}::{{ record.description }}</div>
@@ -331,9 +345,9 @@
                         </ng-container>
                         <ng-container *ngIf="!updateSelectedServiceNumberRecord">
                             <p-dropdown [options]="recordsServiceType" [(ngModel)]="record.serviceTypeCode"
-                                [ngModelOptions]="{standalone: true}" optionValue="serviceId"
-                                optionLabel="serviceId" [filter]="true" [filterFields]="['serviceId','description']"
-                                [showClear]="true" [virtualScroll]="true" [virtualScrollItemSize]="40"
+                                [ngModelOptions]="{standalone: true}" optionValue="serviceId" optionLabel="serviceId"
+                                [filter]="true" [filterFields]="['serviceId','description']" [showClear]="true"
+                                [virtualScroll]="true" [virtualScrollItemSize]="40"
                                 placeholder=`{{record.serviceTypeCode}}` [appendTo]="'body'">
                                 <ng-template let-record pTemplate="item">
                                     <div class="flex align-items-center gap-2">
@@ -388,10 +402,10 @@
                 <p-cellEditor>
                     <ng-template pTemplate="input">
                         <p-dropdown [options]="recordsPersonnelNumber" [(ngModel)]="record.personnelNumberCode"
-                            [ngModelOptions]="{standalone: true}" optionValue="code" optionLabel="code"
-                            [filter]="true" [filterFields]="['code','description']" [showClear]="true"
-                            placeholder=`{{record.personnelNumberCode}}` [appendTo]="'body'"
-                            [virtualScroll]="true" [virtualScrollItemSize]="40">
+                            [ngModelOptions]="{standalone: true}" optionValue="code" optionLabel="code" [filter]="true"
+                            [filterFields]="['code','description']" [showClear]="true"
+                            placeholder=`{{record.personnelNumberCode}}` [appendTo]="'body'" [virtualScroll]="true"
+                            [virtualScrollItemSize]="40">
                             <ng-template let-record pTemplate="item">
                                 <div class="flex align-items-center gap-2">
                                     <div>{{ record.code }}::{{ record.description }}</div>
@@ -408,10 +422,10 @@
                 <p-cellEditor>
                     <ng-template pTemplate="input">
                         <p-dropdown [options]="recordsLineType" [(ngModel)]="record.lineTypeCode"
-                            [ngModelOptions]="{standalone: true}" optionValue="code" optionLabel="code"
-                            [filter]="true" [filterFields]="['code','description']" [showClear]="true"
-                            placeholder=`{{record.lineTypeCode}}` [appendTo]="'body'"
-                            [virtualScroll]="true" [virtualScrollItemSize]="40">
+                            [ngModelOptions]="{standalone: true}" optionValue="code" optionLabel="code" [filter]="true"
+                            [filterFields]="['code','description']" [showClear]="true"
+                            placeholder=`{{record.lineTypeCode}}` [appendTo]="'body'" [virtualScroll]="true"
+                            [virtualScrollItemSize]="40">
                             <ng-template let-record pTemplate="item">
                                 <div class="flex align-items-center gap-2">
                                     <div>{{ record.code }}::{{ record.description }}</div>
@@ -494,67 +508,68 @@
     <ng-template pTemplate="footer" class="m-3">
 
         <ng-container *ngIf="parsedData">
-                <tr *ngFor="let item of parsedData ; let i = index">
-                    <td>
-                        <p-checkbox [value]="item"></p-checkbox>
-                    </td>
-                    <td></td>
-                    <td>
-                        <p-dropdown [options]="recordsServiceNumber" [(ngModel)]="item.serviceNumberCode"
-                            [ngModelOptions]="{standalone: true}" optionValue="serviceNumberCode" optionLabel="description"
-                            [filter]="true" [filterFields]="['serviceNumberCode','description']" [showClear]="true"
-                            placeholder="Select SeviceNumber" (onChange)="onServiceNumberChangeForExcelSheet($event,i)"
-                             [appendTo]="'body'"  [virtualScroll]="true" [virtualScrollItemSize]="40">
-                            <ng-template let-record pTemplate="item">
-                                <div class="flex align-items-center gap-2">
-                                    <div>{{ record.serviceNumberCode }}::{{ record.description }}</div>
-                                </div>
-                            </ng-template>
-                        </p-dropdown>
-                    </td>
-                    <td>
-                        <!-- <ng-container *ngIf="!selectedServiceNumberRecord">
+            <tr *ngFor="let item of parsedData ; let i = index">
+                <td>
+                    <p-checkbox [value]="item"></p-checkbox>
+                </td>
+                <td></td>
+                <td>
+                    <p-dropdown [options]="recordsServiceNumber" [(ngModel)]="item.serviceNumberCode"
+                        [ngModelOptions]="{standalone: true}" optionValue="serviceNumberCode" optionLabel="description"
+                        [filter]="true" [filterFields]="['serviceNumberCode','description']" [showClear]="true"
+                        placeholder="Select SeviceNumber" (onChange)="onServiceNumberChangeForExcelSheet($event,i)"
+                        [appendTo]="'body'" [virtualScroll]="true" [virtualScrollItemSize]="40">
+                        <ng-template let-record pTemplate="item">
+                            <div class="flex align-items-center gap-2">
+                                <div>{{ record.serviceNumberCode }}::{{ record.description }}</div>
+                            </div>
+                        </ng-template>
+                    </p-dropdown>
+                </td>
+                <td>
+                    <!-- <ng-container *ngIf="!selectedServiceNumberRecord">
                             <input pInputText class="rounded-input" type="text" [(ngModel)]="newService.shortText">
                         </ng-container>
                         <ng-container *ngIf="shortTextChangeAllowed && selectedServiceNumberRecord">
                             <input pInputText class="rounded-input" type="text" [(ngModel)]="selectedServiceNumberRecord.description"
                                 (ngModelChange)="shortText = $event">
                         </ng-container>-->
-                        <ng-container *ngIf="selectedServiceNumberRecordForExcel">
-                            {{ selectedServiceNumberRecordForExcel.description }}
-                        </ng-container> 
-                        <ng-container *ngIf="!selectedServiceNumberRecordForExcel">
-                            <input pInputText class="rounded-input" type="text" [(ngModel)]="item.shortText">
-                        </ng-container>
-                        <!-- <input pInputText class="rounded-input" type="text" [(ngModel)]="item.shortText"> -->
-                    </td>
-        
-                    <td>
-                        <ng-container *ngIf="item.formulaCode && selectedFormulaRecordForExcel && resultAfterTest">
-                            {{resultAfterTest}}
-                        </ng-container>
-                        <ng-container *ngIf="!selectedFormulaRecordForExcel">
-                            <input pInputNumber class="rounded-input" name="quantity" type="number" [min]="0" [(ngModel)]="item.quantity">
-                        </ng-container>
-                    </td>
-        
-                    <td>
-                        <p-dropdown [options]="recordsFormula" [(ngModel)]="item.formulaCode"
-                            [ngModelOptions]="{standalone: true}" optionValue="formula" optionLabel="formula"
-                            [filter]="true" [filterFields]="['formula','description']" [showClear]="true"
-                            placeholder="Select Formula" [required]="true" (onChange)="onFormulaSelectForExcel($event,i)"
-                            [appendTo]="'body'"  [virtualScroll]="true" [virtualScrollItemSize]="40">
-                            <ng-template let-record pTemplate="item">
-                                <div class="flex align-items-center gap-2">
-                                    <div>{{ record.formula }}::{{ record.description }}</div>
-                                </div>
-                            </ng-template>
-                        </p-dropdown>
-                    </td>
-        
-                    <td>
-                        <button class="mb-2" (click)="openPopup()">Enter Parameters</button>
-                        <!-- <ng-container *ngIf="showPopup && selectedFormulaRecord ">
+                    <ng-container *ngIf="selectedServiceNumberRecordForExcel">
+                        {{ selectedServiceNumberRecordForExcel.description }}
+                    </ng-container>
+                    <ng-container *ngIf="!selectedServiceNumberRecordForExcel">
+                        <input pInputText class="rounded-input" type="text" [(ngModel)]="item.shortText">
+                    </ng-container>
+                    <!-- <input pInputText class="rounded-input" type="text" [(ngModel)]="item.shortText"> -->
+                </td>
+
+                <td>
+                    <ng-container *ngIf="item.formulaCode && selectedFormulaRecordForExcel && resultAfterTest">
+                        {{resultAfterTest}}
+                    </ng-container>
+                    <ng-container *ngIf="!selectedFormulaRecordForExcel">
+                        <input pInputNumber class="rounded-input" name="quantity" type="number" [min]="0"
+                            [(ngModel)]="item.quantity">
+                    </ng-container>
+                </td>
+
+                <td>
+                    <p-dropdown [options]="recordsFormula" [(ngModel)]="item.formulaCode"
+                        [ngModelOptions]="{standalone: true}" optionValue="formula" optionLabel="formula"
+                        [filter]="true" [filterFields]="['formula','description']" [showClear]="true"
+                        placeholder="Select Formula" [required]="true" (onChange)="onFormulaSelectForExcel($event,i)"
+                        [appendTo]="'body'" [virtualScroll]="true" [virtualScrollItemSize]="40">
+                        <ng-template let-record pTemplate="item">
+                            <div class="flex align-items-center gap-2">
+                                <div>{{ record.formula }}::{{ record.description }}</div>
+                            </div>
+                        </ng-template>
+                    </p-dropdown>
+                </td>
+
+                <td>
+                    <button class="mb-2" (click)="openPopup()">Enter Parameters</button>
+                    <!-- <ng-container *ngIf="showPopup && selectedFormulaRecord ">
                             <div class="popup">
                                 <h3>Enter Parameters</h3>
                                 <div *ngFor="let parameterId of selectedFormulaRecord.parameterIds">
@@ -566,210 +581,206 @@
                                 <button class="form-button" (click)="saveParameters()">Save</button>
                             </div>
                         </ng-container> -->
-                       
-                    </td>
-        
-                    <td>
-                        <input name="grossPrice" class="rounded-input" pInputNumber type="number" [min]="0" [(ngModel)]="item.grossPrice">
-                    </td>
-                    <td>
-                        <ng-container *ngIf="selectedFormulaRecordForExcel && resultAfterTest">
-                            {{resultAfterTest * item.grossPrice}}
-                        </ng-container>
-                        <ng-container *ngIf="!selectedFormulaRecordForExcel">
-                            {{ item.quantity * item.grossPrice }}
-                        </ng-container>
-                        <!-- <input name="netValue" type="number" [(ngModel)]="newService.netValue"> -->
-                    </td>
-        
-                    <td>
-                        <ng-container *ngIf="selectedServiceNumberRecordForExcel">
-                            {{selectedServiceNumberRecordForExcel.baseUnitOfMeasurement}}
-                        </ng-container>
-        
-                        <ng-container *ngIf="!selectedServiceNumberRecordForExcel">
-                            <p-dropdown [options]="recordsUnitOfMeasure" [(ngModel)]="item.unitOfMeasurementCode"
-                                [ngModelOptions]="{standalone: true}" optionValue="code" optionLabel="code" [filter]="true"
-                                [filterFields]="['code','description']" [showClear]="true" placeholder="Select UnitOfMeasure"
-                                [required]="true" [appendTo]="'body'"
-                                [virtualScroll]="true" [virtualScrollItemSize]="40">
-                                <ng-template let-record pTemplate="item">
-                                    <div class="flex align-items-center gap-2">
-                                        <!-- <div>{{ record.UnitOfMeasureLongName }}::{{ record.UnitOfMeasureName }}</div> -->
-                                        <div>{{ record.code }}::{{ record.description }}</div>
-                                    </div>
-                                </ng-template>
-                            </p-dropdown>
-                        </ng-container>
-                    </td>
-        
-                    <td>
-                        <ng-container *ngIf="modelSpecRecord">
-                            {{ modelSpecRecord.currencyCode }}
-                        </ng-container>
-                    </td>
-        
-                    <td>
-                        <input pInputNumber class="rounded-input" name="overFulfilmentPercentage" type="number" [min]="0"
-                            [(ngModel)]="item.overFulfilmentPercentage">
-                    </td>
-        
-                    <td>
-                        <input name="priceChangedAllowed"  type="checkbox" [(ngModel)]="item.priceChangedAllowed">
-                    </td>
-        
-                    <td>
-                        <input name="unlimitedOverFulfillment" type="checkbox"
-                            [(ngModel)]="item.unlimitedOverFulfillment">
-                    </td>
-        
-                    <td>
-                        <input pInputNumber class="rounded-input" name="pricePerUnitOfMeasurement" type="number" [min]="0"
-                            [(ngModel)]="item.pricePerUnitOfMeasurement">
-                    </td>
-        
-                    <td>
-                      
-                        <ng-container *ngIf="selectedServiceNumberRecordForExcel">
-                            {{ selectedServiceNumberRecordForExcel.materialGroupCode }}
-                        </ng-container>
-                        <ng-container *ngIf="!selectedServiceNumberRecordForExcel">
-                            <p-dropdown [options]="recordsMatGrp" [(ngModel)]="item.materialGroupCode"
-                                [ngModelOptions]="{standalone: true}" optionValue="code" optionLabel="code"
-                                [filter]="true" [filterFields]="['code','description']" [showClear]="true"
-                                placeholder="Select MatGrp" [required]="true" [appendTo]="'body'"
-                                [virtualScroll]="true" [virtualScrollItemSize]="40">
-                                <ng-template let-record pTemplate="item">
-                                    <div class="flex align-items-center gap-2">
-                                        <div>{{ record.code }}::{{ record.description }}</div>
-                                    </div>
-                                </ng-template>
-                            </p-dropdown>
-                        </ng-container>
-                    </td>
-        
-                    <td>
-                        <ng-container *ngIf="selectedServiceNumberRecordForExcel">
-                            {{ selectedServiceNumberRecordForExcel.serviceTypeCode }}
-                        </ng-container>
-                        <ng-container *ngIf="!selectedServiceNumberRecordForExcel">
-        
-                            <p-dropdown [options]="recordsServiceType" [(ngModel)]="item.serviceTypeCode"
-                                [ngModelOptions]="{standalone: true}" optionValue="serviceId" optionLabel="serviceId"
-                                [filter]="true" [filterFields]="['serviceId','description']" [showClear]="true"
-                                placeholder="Select ServiceType" [appendTo]="'body'"
-                                [virtualScroll]="true" [virtualScrollItemSize]="40">
-                                <ng-template let-record pTemplate="item">
-                                    <div class="flex align-items-center gap-2">
-                                        <div>{{ record.serviceId }}::{{ record.description }}</div>
-                                    </div>
-                                </ng-template>
-                            </p-dropdown>
-                        </ng-container>
-                    </td>
-        
-                    <td>
-                        <input pInputText class="rounded-input" name="externalServiceNumber" type="text"
-                            [(ngModel)]="item.externalServiceNumber">
-                    </td>
-        
-                    <td>
-                        <ng-container *ngIf="selectedServiceNumberRecordForExcel">
-                            {{selectedServiceNumberRecordForExcel.serviceText}}
-                        </ng-container>
-                        <ng-container *ngIf="!selectedServiceNumberRecordForExcel">
-                            <input pInputText class="rounded-input" type="text" [(ngModel)]="item.serviceText">
-                        </ng-container>
-                    </td>
-        
-                    <td>
-                        <input pInputText class="rounded-input" name="lineText" type="text" [(ngModel)]="item.lineText">
-                    </td>
-        
-                    <td>
-                        <p-dropdown [options]="recordsPersonnelNumber" [(ngModel)]="item.personnelNumberCode"
-                            [ngModelOptions]="{standalone: true}" optionValue="code" optionLabel="code"
-                            [filter]="true" [filterFields]="['code','description']" [showClear]="true"
-                            placeholder="Select PersonnelNumber" [appendTo]="'body'"
+
+                </td>
+
+                <td>
+                    <input name="grossPrice" class="rounded-input" pInputNumber type="number" [min]="0"
+                        [(ngModel)]="item.grossPrice">
+                </td>
+                <td>
+                    <ng-container *ngIf="selectedFormulaRecordForExcel && resultAfterTest">
+                        {{resultAfterTest * item.grossPrice}}
+                    </ng-container>
+                    <ng-container *ngIf="!selectedFormulaRecordForExcel">
+                        {{ item.quantity * item.grossPrice }}
+                    </ng-container>
+                    <!-- <input name="netValue" type="number" [(ngModel)]="newService.netValue"> -->
+                </td>
+
+                <td>
+                    <ng-container *ngIf="selectedServiceNumberRecordForExcel">
+                        {{selectedServiceNumberRecordForExcel.baseUnitOfMeasurement}}
+                    </ng-container>
+
+                    <ng-container *ngIf="!selectedServiceNumberRecordForExcel">
+                        <p-dropdown [options]="recordsUnitOfMeasure" [(ngModel)]="item.unitOfMeasurementCode"
+                            [ngModelOptions]="{standalone: true}" optionValue="code" optionLabel="code" [filter]="true"
+                            [filterFields]="['code','description']" [showClear]="true"
+                            placeholder="Select UnitOfMeasure" [required]="true" [appendTo]="'body'"
                             [virtualScroll]="true" [virtualScrollItemSize]="40">
                             <ng-template let-record pTemplate="item">
                                 <div class="flex align-items-center gap-2">
+                                    <!-- <div>{{ record.UnitOfMeasureLongName }}::{{ record.UnitOfMeasureName }}</div> -->
                                     <div>{{ record.code }}::{{ record.description }}</div>
                                 </div>
                             </ng-template>
                         </p-dropdown>
-                    </td>
-        
-                    <td>
-                        <p-dropdown [options]="recordsLineType" [(ngModel)]="item.lineTypeCode"
+                    </ng-container>
+                </td>
+
+                <td>
+                    <ng-container *ngIf="modelSpecRecord">
+                        {{ modelSpecRecord.currencyCode }}
+                    </ng-container>
+                </td>
+
+                <td>
+                    <input pInputNumber class="rounded-input" name="overFulfilmentPercentage" type="number" [min]="0"
+                        [(ngModel)]="item.overFulfilmentPercentage">
+                </td>
+
+                <td>
+                    <input name="priceChangedAllowed" type="checkbox" [(ngModel)]="item.priceChangedAllowed">
+                </td>
+
+                <td>
+                    <input name="unlimitedOverFulfillment" type="checkbox" [(ngModel)]="item.unlimitedOverFulfillment">
+                </td>
+
+                <td>
+                    <input pInputNumber class="rounded-input" name="pricePerUnitOfMeasurement" type="number" [min]="0"
+                        [(ngModel)]="item.pricePerUnitOfMeasurement">
+                </td>
+
+                <td>
+
+                    <ng-container *ngIf="selectedServiceNumberRecordForExcel">
+                        {{ selectedServiceNumberRecordForExcel.materialGroupCode }}
+                    </ng-container>
+                    <ng-container *ngIf="!selectedServiceNumberRecordForExcel">
+                        <p-dropdown [options]="recordsMatGrp" [(ngModel)]="item.materialGroupCode"
                             [ngModelOptions]="{standalone: true}" optionValue="code" optionLabel="code" [filter]="true"
-                            [filterFields]="['code','description']" [showClear]="true" placeholder="Select LineType"
-                            [appendTo]="'body'" [virtualScroll]="true" [virtualScrollItemSize]="40">
+                            [filterFields]="['code','description']" [showClear]="true" placeholder="Select MatGrp"
+                            [required]="true" [appendTo]="'body'" [virtualScroll]="true" [virtualScrollItemSize]="40">
                             <ng-template let-record pTemplate="item">
                                 <div class="flex align-items-center gap-2">
                                     <div>{{ record.code }}::{{ record.description }}</div>
                                 </div>
                             </ng-template>
                         </p-dropdown>
-                    </td>
-        
-                    <td>
-                        <input pInputText class="rounded-input" name="lineNumber" type="text" [(ngModel)]="item.lineNumber">
-                    </td>
-        
-                    <td>
-                        <input pInputText class="rounded-input" name="alternatives" type="text" [(ngModel)]="item.alternatives">
-                    </td>
-        
-                    <td>
-                        <input name="biddersLine" type="checkbox" [(ngModel)]="item.biddersLine">
-                    </td>
-        
-                    <td>
-                        <input name="supplementaryLine" type="checkbox" [(ngModel)]="item.supplementaryLine">
-                    </td>
-        
-                    <td>
-                        <input name="lotSizeForCostingIsOne" type="checkbox" [(ngModel)]="item.lotSizeForCostingIsOne">
-        
-                    </td>
-                    <td style="min-width: 10rem;">
-                        <div class="flex align-items-center justify-content-center gap-2">
-                            <button pButton type="button" icon="pi pi-plus" class="ui-button-info" label="Save"
-                                style=" border-radius: 8px; " (click)="saveMainItemFromExcel(item)">
-                            </button>
-                            <button pButton type="button" icon="pi pi-times" class="p-button-danger" label="Cancel"
-                                style=" border-radius: 8px; " (click)="cancelFromExcel(item)">
-                            </button>
-                        </div>
-                    </td>
-        
-                    <!-- <td>
+                    </ng-container>
+                </td>
+
+                <td>
+                    <ng-container *ngIf="selectedServiceNumberRecordForExcel">
+                        {{ selectedServiceNumberRecordForExcel.serviceTypeCode }}
+                    </ng-container>
+                    <ng-container *ngIf="!selectedServiceNumberRecordForExcel">
+
+                        <p-dropdown [options]="recordsServiceType" [(ngModel)]="item.serviceTypeCode"
+                            [ngModelOptions]="{standalone: true}" optionValue="serviceId" optionLabel="serviceId"
+                            [filter]="true" [filterFields]="['serviceId','description']" [showClear]="true"
+                            placeholder="Select ServiceType" [appendTo]="'body'" [virtualScroll]="true"
+                            [virtualScrollItemSize]="40">
+                            <ng-template let-record pTemplate="item">
+                                <div class="flex align-items-center gap-2">
+                                    <div>{{ record.serviceId }}::{{ record.description }}</div>
+                                </div>
+                            </ng-template>
+                        </p-dropdown>
+                    </ng-container>
+                </td>
+
+                <td>
+                    <input pInputText class="rounded-input" name="externalServiceNumber" type="text"
+                        [(ngModel)]="item.externalServiceNumber">
+                </td>
+
+                <td>
+                    <ng-container *ngIf="selectedServiceNumberRecordForExcel">
+                        {{selectedServiceNumberRecordForExcel.serviceText}}
+                    </ng-container>
+                    <ng-container *ngIf="!selectedServiceNumberRecordForExcel">
+                        <input pInputText class="rounded-input" type="text" [(ngModel)]="item.serviceText">
+                    </ng-container>
+                </td>
+
+                <td>
+                    <input pInputText class="rounded-input" name="lineText" type="text" [(ngModel)]="item.lineText">
+                </td>
+
+                <td>
+                    <p-dropdown [options]="recordsPersonnelNumber" [(ngModel)]="item.personnelNumberCode"
+                        [ngModelOptions]="{standalone: true}" optionValue="code" optionLabel="code" [filter]="true"
+                        [filterFields]="['code','description']" [showClear]="true" placeholder="Select PersonnelNumber"
+                        [appendTo]="'body'" [virtualScroll]="true" [virtualScrollItemSize]="40">
+                        <ng-template let-record pTemplate="item">
+                            <div class="flex align-items-center gap-2">
+                                <div>{{ record.code }}::{{ record.description }}</div>
+                            </div>
+                        </ng-template>
+                    </p-dropdown>
+                </td>
+
+                <td>
+                    <p-dropdown [options]="recordsLineType" [(ngModel)]="item.lineTypeCode"
+                        [ngModelOptions]="{standalone: true}" optionValue="code" optionLabel="code" [filter]="true"
+                        [filterFields]="['code','description']" [showClear]="true" placeholder="Select LineType"
+                        [appendTo]="'body'" [virtualScroll]="true" [virtualScrollItemSize]="40">
+                        <ng-template let-record pTemplate="item">
+                            <div class="flex align-items-center gap-2">
+                                <div>{{ record.code }}::{{ record.description }}</div>
+                            </div>
+                        </ng-template>
+                    </p-dropdown>
+                </td>
+
+                <td>
+                    <input pInputText class="rounded-input" name="lineNumber" type="text" [(ngModel)]="item.lineNumber">
+                </td>
+
+                <td>
+                    <input pInputText class="rounded-input" name="alternatives" type="text"
+                        [(ngModel)]="item.alternatives">
+                </td>
+
+                <td>
+                    <input name="biddersLine" type="checkbox" [(ngModel)]="item.biddersLine">
+                </td>
+
+                <td>
+                    <input name="supplementaryLine" type="checkbox" [(ngModel)]="item.supplementaryLine">
+                </td>
+
+                <td>
+                    <input name="lotSizeForCostingIsOne" type="checkbox" [(ngModel)]="item.lotSizeForCostingIsOne">
+
+                </td>
+                <td style="min-width: 10rem;">
+                    <div class="flex align-items-center justify-content-center gap-2">
+                        <button pButton type="button" icon="pi pi-plus" class="ui-button-info p-button-outlined"
+                            label="Save" style=" border-radius: 8px; " (click)="saveMainItemFromExcel(item)">
+                        </button>
+                        <button pButton type="button" icon="pi pi-times" class="p-button-danger p-button-outlined"
+                            label="Cancel" style=" border-radius: 8px; " (click)="cancelFromExcel(item)">
+                        </button>
+                    </div>
+                </td>
+
+                <!-- <td>
                         <button pButton type="button" icon="pi pi-plus" class="ui-button-info rounded-input" label="Save Line"
                             (click)="saveMainItemFromExcel(item)">
                         </button>
                     </td> -->
-                </tr>
-        
+            </tr>
+
         </ng-container>
         <tr>
             <td>
                 <p-checkbox [value]="newService"></p-checkbox>
             </td>
-
             <td>
             </td>
-
             <!-- <td>
                 <input name="deletionIndicator" type="checkbox" [(ngModel)]="newService.deletionIndicator">
             </td> -->
-
             <td>
                 <p-dropdown [options]="recordsServiceNumber" [(ngModel)]="selectedServiceNumber"
                     [ngModelOptions]="{standalone: true}" optionValue="serviceNumberCode" optionLabel="description"
                     [filter]="true" [filterFields]="['serviceNumberCode','description']" [showClear]="true"
-                    placeholder="Select SeviceNumber" (onChange)="onServiceNumberChange($event)"
-                     [appendTo]="'body'"  [virtualScroll]="true" [virtualScrollItemSize]="40">
+                    placeholder="Select SeviceNumber" (onChange)="onServiceNumberChange($event)" [appendTo]="'body'"
+                    [virtualScroll]="true" [virtualScrollItemSize]="40">
                     <ng-template let-record pTemplate="item">
                         <div class="flex align-items-center gap-2">
                             <div>{{ record.serviceNumberCode }}::{{ record.description }}</div>
@@ -777,14 +788,13 @@
                     </ng-template>
                 </p-dropdown>
             </td>
-
             <td>
                 <ng-container *ngIf="!selectedServiceNumberRecord">
                     <input pInputText class="rounded-input" type="text" [(ngModel)]="newService.shortText">
                 </ng-container>
                 <ng-container *ngIf="shortTextChangeAllowed && selectedServiceNumberRecord">
-                    <input pInputText class="rounded-input" type="text" [(ngModel)]="selectedServiceNumberRecord.description"
-                        (ngModelChange)="shortText = $event">
+                    <input pInputText class="rounded-input" type="text"
+                        [(ngModel)]="selectedServiceNumberRecord.description" (ngModelChange)="shortText = $event">
                 </ng-container>
                 <ng-container *ngIf="!shortTextChangeAllowed && selectedServiceNumberRecord">
                     {{ selectedServiceNumberRecord.description }}
@@ -797,16 +807,17 @@
                     {{resultAfterTest}}
                 </ng-container>
                 <ng-container *ngIf="!selectedFormulaRecord">
-                    <input pInputNumber class="rounded-input" name="quantity" type="number" [min]="0" [(ngModel)]="newService.quantity">
+                    <input pInputNumber class="rounded-input" name="quantity" type="number" [min]="0"
+                        [(ngModel)]="newService.quantity">
                 </ng-container>
             </td>
 
             <td>
                 <p-dropdown [options]="recordsFormula" [(ngModel)]="selectedFormula"
-                    [ngModelOptions]="{standalone: true}" optionValue="formula" optionLabel="formula"
-                    [filter]="true" [filterFields]="['formula','description']" [showClear]="true"
-                    placeholder="Select Formula" [required]="true" (onChange)="onFormulaSelect($event)"
-                    [appendTo]="'body'"  [virtualScroll]="true" [virtualScrollItemSize]="40">
+                    [ngModelOptions]="{standalone: true}" optionValue="formula" optionLabel="formula" [filter]="true"
+                    [filterFields]="['formula','description']" [showClear]="true" placeholder="Select Formula"
+                    [required]="true" (onChange)="onFormulaSelect($event)" [appendTo]="'body'" [virtualScroll]="true"
+                    [virtualScrollItemSize]="40">
                     <ng-template let-record pTemplate="item">
                         <div class="flex align-items-center gap-2">
                             <div>{{ record.formula }}::{{ record.description }}</div>
@@ -814,7 +825,6 @@
                     </ng-template>
                 </p-dropdown>
             </td>
-
             <td>
                 <button class="mb-2" (click)="openPopup()">Enter Parameters</button>
                 <!-- <ng-container *ngIf="showPopup && selectedFormulaRecord ">
@@ -829,11 +839,12 @@
                         <button class="form-button" (click)="saveParameters()">Save</button>
                     </div>
                 </ng-container> -->
-               
+
             </td>
 
             <td>
-                <input name="grossPrice" class="rounded-input" pInputNumber type="number" [min]="0" [(ngModel)]="newService.grossPrice">
+                <input name="grossPrice" class="rounded-input" pInputNumber type="number" [min]="0"
+                    [(ngModel)]="newService.grossPrice">
             </td>
             <td>
                 <ng-container *ngIf="selectedFormulaRecord && resultAfterTest">
@@ -854,8 +865,7 @@
                     <p-dropdown [options]="recordsUnitOfMeasure" [(ngModel)]="selectedUnitOfMeasure"
                         [ngModelOptions]="{standalone: true}" optionValue="code" optionLabel="code" [filter]="true"
                         [filterFields]="['code','description']" [showClear]="true" placeholder="Select UnitOfMeasure"
-                        [required]="true" [appendTo]="'body'"
-                        [virtualScroll]="true" [virtualScrollItemSize]="40">
+                        [required]="true" [appendTo]="'body'" [virtualScroll]="true" [virtualScrollItemSize]="40">
                         <ng-template let-record pTemplate="item">
                             <div class="flex align-items-center gap-2">
                                 <!-- <div>{{ record.UnitOfMeasureLongName }}::{{ record.UnitOfMeasureName }}</div> -->
@@ -878,7 +888,7 @@
             </td>
 
             <td>
-                <input name="priceChangedAllowed"  type="checkbox" [(ngModel)]="newService.priceChangedAllowed">
+                <input name="priceChangedAllowed" type="checkbox" [(ngModel)]="newService.priceChangedAllowed">
             </td>
 
             <td>
@@ -906,10 +916,9 @@
                 </ng-container>
                 <ng-container *ngIf="!selectedServiceNumberRecord">
                     <p-dropdown [options]="recordsMatGrp" [(ngModel)]="selectedMatGrp"
-                        [ngModelOptions]="{standalone: true}" optionValue="code" optionLabel="code"
-                        [filter]="true" [filterFields]="['code','description']" [showClear]="true"
-                        placeholder="Select MatGrp" [required]="true" [appendTo]="'body'"
-                        [virtualScroll]="true" [virtualScrollItemSize]="40">
+                        [ngModelOptions]="{standalone: true}" optionValue="code" optionLabel="code" [filter]="true"
+                        [filterFields]="['code','description']" [showClear]="true" placeholder="Select MatGrp"
+                        [required]="true" [appendTo]="'body'" [virtualScroll]="true" [virtualScrollItemSize]="40">
                         <ng-template let-record pTemplate="item">
                             <div class="flex align-items-center gap-2">
                                 <div>{{ record.code }}::{{ record.description }}</div>
@@ -928,8 +937,8 @@
                     <p-dropdown [options]="recordsServiceType" [(ngModel)]="selectedServiceType"
                         [ngModelOptions]="{standalone: true}" optionValue="serviceId" optionLabel="serviceId"
                         [filter]="true" [filterFields]="['serviceId','description']" [showClear]="true"
-                        placeholder="Select ServiceType" [appendTo]="'body'"
-                        [virtualScroll]="true" [virtualScrollItemSize]="40">
+                        placeholder="Select ServiceType" [appendTo]="'body'" [virtualScroll]="true"
+                        [virtualScrollItemSize]="40">
                         <ng-template let-record pTemplate="item">
                             <div class="flex align-items-center gap-2">
                                 <div>{{ record.serviceId }}::{{ record.description }}</div>
@@ -959,10 +968,9 @@
 
             <td>
                 <p-dropdown [options]="recordsPersonnelNumber" [(ngModel)]="selectedPersonnelNumber"
-                    [ngModelOptions]="{standalone: true}" optionValue="code" optionLabel="code"
-                    [filter]="true" [filterFields]="['code','description']" [showClear]="true"
-                    placeholder="Select PersonnelNumber" [appendTo]="'body'"
-                    [virtualScroll]="true" [virtualScrollItemSize]="40">
+                    [ngModelOptions]="{standalone: true}" optionValue="code" optionLabel="code" [filter]="true"
+                    [filterFields]="['code','description']" [showClear]="true" placeholder="Select PersonnelNumber"
+                    [appendTo]="'body'" [virtualScroll]="true" [virtualScrollItemSize]="40">
                     <ng-template let-record pTemplate="item">
                         <div class="flex align-items-center gap-2">
                             <div>{{ record.code }}::{{ record.description }}</div>
@@ -985,11 +993,13 @@
             </td>
 
             <td>
-                <input pInputText class="rounded-input" name="lineNumber" type="text" [(ngModel)]="newService.lineNumber">
+                <input pInputText class="rounded-input" name="lineNumber" type="text"
+                    [(ngModel)]="newService.lineNumber">
             </td>
 
             <td>
-                <input pInputText class="rounded-input" name="alternatives" type="text" [(ngModel)]="newService.alternatives">
+                <input pInputText class="rounded-input" name="alternatives" type="text"
+                    [(ngModel)]="newService.alternatives">
             </td>
 
             <td>
@@ -1006,8 +1016,9 @@
             </td>
 
             <td>
-                <button pButton type="button" icon="pi pi-plus" class="ui-button-info rounded-input" label="Save Line"
-                    [disabled]="!selectedServiceNumberRecord && !selectedUnitOfMeasure" (click)="addRow()">
+                <button pButton type="button" icon="pi pi-plus" class="p-button-outlined rounded-input"
+                    label="Save Line" [disabled]="!selectedServiceNumberRecord && !selectedUnitOfMeasure"
+                    (click)="addRow()">
                 </button>
             </td>
         </tr>
@@ -1129,26 +1140,19 @@
     [style]="{width: '20vw'}" [responsive]="true">
     <!-- class="flex align-items-between justify-content-between" -->
     <!-- <div > -->
-        <button pButton label="Excel Sheet ?" size="small" (click)="showExcelDialog()" class="m-2"></button>
+    <button pButton label="Excel Sheet ?" size="small" (click)="showExcelDialog()" class="m-2"></button>
     <!-- </div> -->
 </p-dialog>
 
 <!-- Excel Dialog -->
-<p-dialog  class="header-color" [(visible)]="displayExcelDialog" [modal]="true"
-    [style]="{width: '30vw'}" [responsive]="true">
+<p-dialog class="header-color" [(visible)]="displayExcelDialog" [modal]="true" [style]="{width: '30vw'}"
+    [responsive]="true">
     <div class="flex align-items-center justify-content-center flex-column">
-        <p-fileUpload 
-        #fileUploader 
-        name="file" 
-        accept=".xlsx,.xls" 
-        mode="basic" 
-        (onSelect)="onFileSelect($event, fileUploader)" 
-        [auto]="true" 
-        class="m-2" 
-        chooseLabel="Choose Excel File">
-      </p-fileUpload>
-      
+        <p-fileUpload #fileUploader name="file" accept=".xlsx,.xls" mode="basic"
+            (onSelect)="onFileSelect($event, fileUploader)" [auto]="true" class="m-2" chooseLabel="Choose Excel File">
+        </p-fileUpload>
+
     </div>
 
-  
+
 </p-dialog>

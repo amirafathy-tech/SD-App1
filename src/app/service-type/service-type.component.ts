@@ -14,6 +14,8 @@ import { HttpErrorResponse } from '@angular/common/http';
 })
 export class ServiceTypeComponent {
 
+  
+
   records!: ServiceType[];
   private subscription!: Subscription;
   editMode = false;

@@ -1,7 +1,7 @@
 
 import { NgModule } from '@angular/core';
 import { BrowserModule, provideClientHydration } from '@angular/platform-browser';
-import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClient, HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FundamentalNgxCoreModule } from '@fundamental-ngx/core';
 
@@ -30,6 +30,7 @@ import { CardModule } from 'primeng/card';
 import { FieldsetModule } from 'primeng/fieldset';
 import { TreeTableModule } from 'primeng/treetable';
 import { FileUploadModule } from 'primeng/fileupload';
+import { MenuModule } from 'primeng/menu';
 
 
 import { AppRoutingModule } from './app-routing.module';
@@ -54,6 +55,13 @@ import { HomeComponent } from './home/home.component';
 import { NewServiceMasterComponent } from './new-service-master/new-service-master.component';
 import { ServiceMasterDetailComponent } from './new-service-master/service-master-detail/service-master-detail.component';
 import { HasRoleDirective } from './shared/has-role.directive';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+
+
+export function createTranslateLoader(http: HttpClient) {
+  return new TranslateHttpLoader(http, './assets/i18n/', '.json');
+} 
 
 @NgModule({
   declarations: [
@@ -109,9 +117,18 @@ import { HasRoleDirective } from './shared/has-role.directive';
     FieldsetModule,
     TreeTableModule,
     FileUploadModule,
+    MenuModule,
     
   
     NgHttpLoaderModule.forRoot(),
+
+    TranslateModule.forRoot({
+      loader:{
+        provide: TranslateLoader,
+        useFactory: (createTranslateLoader),
+        deps: [HttpClient]
+      }
+    }),
   ],
  // providers: [],
  providers: [

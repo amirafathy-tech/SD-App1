@@ -1,9 +1,9 @@
 <!-- <nav class="navbar bg-body-tertiary fixed-top"> -->
-<nav class="navbar navbar-expand-lg bg-dark navbar-dark  fixed-top">
+<nav class="navbar navbar-expand-lg shadow  bg-white fixed-top" >
   <div class="container-fluid">
     <fd-shellbar-logo>
       <a href="#" class="fd-shellbar__logo fd-shellbar__logo--image-replaced" aria-label="SAP"></a>
-      <a class="navbar-brand" href="#"></a>
+      <a class="navbar-brand m-3" href="#">Master Data </a>
     </fd-shellbar-logo>
     <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"
       aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
@@ -11,8 +11,10 @@
     </button>
     <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
       <div class="offcanvas-header">
-        <h5 class="offcanvas-title" id="offcanvasNavbarLabel">SD App</h5>
-        <button type="button" class="btn-close " data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        <h5 class="offcanvas-title" id="offcanvasNavbarLabel"></h5>
+        <button type="button" class="btn-close " data-bs-dismiss="offcanvas" aria-label="Close">
+          <i class="pi pi-times"></i>
+        </button>
       </div>
       <div class="offcanvas-body">
         <ul class="navbar-nav justify-content-start flex-grow-1 pe-3">
@@ -47,6 +49,22 @@
               <a class="nav-link" routerLink="/home">Home</a>
             </li>
           </ng-template>
+
+          <li class="nav-item">
+            <button (click)="toggleTheme()" class="theme-toggle-btn">
+              <i [ngClass]="isDarkMode ? 'pi pi-sun' : 'pi pi-moon'"></i>
+            </button>
+            
+
+          </li>
+          <li class="nav-item">
+            <button (click)="(switchLanguage('ar'))" class="btn btn-primary mx-2">العربية
+            </button>
+            <button (click)="(switchLanguage('en'))" class="btn btn-danger">English
+            </button>
+            
+
+          </li>
 
           <!-- <li class="nav-item"  >
             <a class="nav-link active" aria-current="page" routerLink="/tendering">Exit</a>

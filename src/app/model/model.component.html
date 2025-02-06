@@ -8,11 +8,11 @@
             <h5>Models:</h5>
         </div>
         <div class="p-toolbar-group-end">
-            <button pButton icon="pi pi-plus" (click)="navigateModelAdd()">Add New Model</button>
+            <p-button  [outlined]="true" icon="pi pi-plus" (click)="navigateModelAdd()" label="Add New Model" />
         </div>
     </p-toolbar>
-    <p-table [value]="records"  dataKey="modelSpecCode" 
-    editMode="row" [tableStyle]="{'min-width': '50rem'}" [scrollable]="true" scrollHeight="400px">
+    <p-table [value]="records"  dataKey="modelSpecCode" [responsive]="true"
+    editMode="row" [tableStyle]="{'min-width': '50rem'}" [scrollable]="true" scrollHeight="flex" [paginator]="true" [rows]="10" [rowsPerPageOptions]="[10, 20, 30]">
         <ng-template pTemplate="header">
             <tr>
                 <th style="width: 4rem">
@@ -100,8 +100,8 @@
                         </ng-template>
                     </p-cellEditor>
                 </td>
-                <td> <button pButton (click)="navigateServices(record)" icon="pi pi-external-link" size="small"
-                        label="Services"></button>
+                <td> <p-button  [outlined]="true"  (click)="navigateServices(record)" icon="pi pi-external-link" size="small"
+                        label="Services" />
                 </td>
                 <td>
                     <div class="flex align-items-center justify-content-center gap-2">
