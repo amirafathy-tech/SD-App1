@@ -54,7 +54,7 @@ import { AddEditServiceMasterComponent } from './new-service-master/add-edit-ser
 import { HomeComponent } from './home/home.component';
 import { NewServiceMasterComponent } from './new-service-master/new-service-master.component';
 import { ServiceMasterDetailComponent } from './new-service-master/service-master-detail/service-master-detail.component';
-import { HasRoleDirective } from './shared/has-role.directive';
+
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
@@ -65,7 +65,6 @@ export function createTranslateLoader(http: HttpClient) {
 
 @NgModule({
   declarations: [
-    HasRoleDirective,
 
     AppComponent,
     HeaderComponent,
@@ -83,8 +82,7 @@ export function createTranslateLoader(http: HttpClient) {
     AddEditServiceMasterComponent,
     HomeComponent,
     NewServiceMasterComponent,
-    ServiceMasterDetailComponent,
-    HasRoleDirective
+    ServiceMasterDetailComponent
   ],
   imports: [
     FundamentalNgxCoreModule,
