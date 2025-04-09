@@ -1,6 +1,6 @@
 ---
 applications:
-  - name: sd-app-dev
+  - name: sd-app-automated
     path: dist/btp-sd-app
     buildpack: staticfile_buildpack
     instances: 1
